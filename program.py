@@ -9,18 +9,26 @@ msg = """
     1. Population by selected year
 """
 
-# df = pd.read_csv('proj.csv')
 # print(df.loc['2030':, ['Year', 'TotalPopulation']])
 # print((df[df['TotalPopulation'] > 8000000]))
 
 
 def filter_by_year():
     os.system('cls')
-    year = input('Please enter a year: ')
+    year = int(input('Please enter a year: '))
+    if 0 < year < 3000: 
+        if year < 2022:
+            df = pd.read_csv('hist.csv')
+            print(df.loc[df['Year'] == year, ['Year', 'TotalPopulation']])
+        else:
+            df = pd.read_csv('proj.csv')
+            print(df.loc[df['Year'] == year, ['Year', 'TotalPopulation']])
+    x = input('Press any key to return to main menu...')
     main()
 
 
 def main():
+    os.system('cls')
     print(msg)
     option = int(input("Please select option: "))
     if option == 1:
