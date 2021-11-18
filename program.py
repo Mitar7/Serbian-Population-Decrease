@@ -1,4 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-dt = pd.read_csv('proj.csv')
+df = pd.read_csv('proj.csv', index_col='Year')
+print(df(df['TotalPopulation']))
