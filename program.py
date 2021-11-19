@@ -10,12 +10,9 @@ msg = """
     2. Show population graphic (year <= 2021)
     3. Show population graphic (year > 2020)
     4. Show population graphic (1995 -> 2095)
-    5. Exit program
+    5. Highest / Lowest population rank
+    6. Exit program
 """
-
-
-# print(df.loc['2030':, ['Year', 'TotalPopulation']])
-# print((df[df['TotalPopulation'] > 8000000]))
 
 
 def filter_by_year():
@@ -28,7 +25,7 @@ def filter_by_year():
         else:
             df = pd.read_csv('proj.csv')
             print(df.loc[df['Year'] == year, ['Year', 'TotalPopulation']])
-    x = input('Press any key to return to main menu...')
+    x = input('Press ENTER to return to main menu...')
     main()
 
 
@@ -37,7 +34,7 @@ def graphic_rep_history():
     df['TotalPopulation'] = df['TotalPopulation'] / 1000000
     df.plot(x='Year', y='TotalPopulation', kind='line', ylabel='Population in Millions', xlabel='Year')
     plt.show()
-    x = input('Press any key to return to main menu...')
+    x = input('Press ENTER to return to main menu...')
     main()
 
 
@@ -46,7 +43,7 @@ def graphic_rep_future():
     df['TotalPopulation'] = df['TotalPopulation'] / 1000000
     df.plot(x='Year', y='TotalPopulation', kind='line', ylabel='Population in Millions', xlabel='Year')
     plt.show()
-    x = input('Press any key to return to main menu...')
+    x = input('Press ENTER to return to main menu...')
     main()
 
 
@@ -55,10 +52,27 @@ def graphic_rep_combine():
     b = pd.read_csv('proj.csv')
     df = pd.merge(a, b, on=["Year", "TotalPopulation", "GrowthRate", "Density", "TotalPopulationRank", "DensityRank"],
                   how='outer')
+    df.sort_index()
     df['TotalPopulation'] = df['TotalPopulation'] / 1000000
     df.plot(x='Year', y='TotalPopulation', kind='line', ylabel='Population in Millions', xlabel='Year')
     plt.show()
-    x = input('Press any key to return to main menu...')
+    x = input('Press ENTER to return to main menu...')
+    main()
+
+
+def population_rank():
+    os.system('cls')
+    a = pd.read_csv('hist.csv')
+    b = pd.read_csv('proj.csv')
+    df = pd.merge(a, b, on=["Year", "TotalPopulation", "GrowthRate", "Density", "TotalPopulationRank", "DensityRank"],
+                  how='outer')
+    min_population_rank = df['TotalPopulationRank'].min()
+    max_population_rank = df['TotalPopulationRank'].max()
+    print(f"""
+        Highest population rank: {min_population_rank}
+        Lowest population rank: {max_population_rank}
+    """)
+    x = input('Press ENTER to return to main menu...')
     main()
 
 
@@ -75,6 +89,8 @@ def main():
     if option == 4:
         graphic_rep_combine()
     if option == 5:
+        population_rank()
+    if option == 6:
         exit()
 
 
